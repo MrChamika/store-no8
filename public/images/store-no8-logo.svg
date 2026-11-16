@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 540 180" role="img" aria-labelledby="title desc">
+  <title id="title">STORE NO 8</title>
+  <desc id="desc">Cobalt blue store plaque with a white inset border and custom geometric Art Deco lettering.</desc>
+  <rect x="0" y="0" width="540" height="180" rx="18" fill="#0869B3"/>
+  <rect x="8" y="8" width="524" height="164" rx="12" fill="none" stroke="#ffffff" stroke-width="4"/>
+  <g fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="square" stroke-linejoin="miter">
+    <!-- S -->
+    <path d="M65 49 H43 C34 49 29 57 29 67 C29 77 36 84 47 91 L57 98 C68 106 70 113 70 122 C70 134 63 141 51 141 H30"/>
+    <!-- T -->
+    <path d="M82 49 H132 M107 49 V141"/>
+    <!-- O -->
+    <path d="M166 95 C166 125 153 143 131 143 C109 143 96 125 96 95 C96 65 109 47 131 47 C153 47 166 65 166 95 Z"/>
+    <!-- R -->
+    <path d="M181 141 V49 H199 C218 49 228 59 228 77 C228 95 218 105 199 105 H181 M199 105 L231 141"/>
+    <!-- E -->
+    <path d="M276 49 H242 V141 H276 M243 95 H270"/>
+    <!-- N -->
+    <path d="M309 141 V49 L353 141 V49"/>
+    <!-- O -->
+    <path d="M421 95 C421 125 408 143 386 143 C364 143 351 125 351 95 C351 65 364 47 386 47 C408 47 421 65 421 95 Z"/>
+    <!-- 8 -->
+    <path d="M474 73 C474 57 465 47 450 47 C435 47 426 57 426 73 C426 88 436 96 450 96 C465 96 474 88 474 73 Z M477 119 C477 101 466 91 450 91 C434 91 423 101 423 119 C423 135 434 145 450 145 C466 145 477 135 477 119 Z"/>
+  </g>
+</svg>

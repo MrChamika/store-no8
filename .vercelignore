@@ -1,0 +1,26 @@
+# Local build output and dependencies
+node_modules
+.next
+out
+.git
+.vercel
+*.tsbuildinfo
+
+# Local AI tooling folders (large, not part of the site)
+.agents
+.augment
+.claude
+.codebuddy
+.codewhale
+.continue
+.cursor
+.factory
+.gemini
+.kilocode
+.kiro
+.opencode
+.qoder
+.roo
+.trae
+.warp
+.windsurf
