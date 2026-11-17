@@ -1,5 +1,11 @@
 import type { Metadata, Viewport } from "next"
-import { Nunito_Sans, Rubik, Poiret_One } from "next/font/google"
+import {
+  Nunito_Sans,
+  Rubik,
+  Poiret_One,
+  Shantell_Sans,
+  Playwrite_FR_Moderne,
+} from "next/font/google"
 
 import "./globals.css"
 import { CartProvider } from "@/components/cart-provider"
@@ -36,6 +42,17 @@ const nunito = Nunito_Sans({
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   preload: true,
+})
+
+const shantell = Shantell_Sans({
+  subsets: ["latin"],
+  variable: "--font-shantell",
+  display: "swap",
+})
+
+const playwrite = Playwrite_FR_Moderne({
+  variable: "--font-playwrite",
+  display: "swap",
 })
 
 export const viewport: Viewport = {
@@ -204,7 +221,7 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${rubik.variable} ${nunito.variable} ${poiret.variable} antialiased`}
+      className={`${rubik.variable} ${nunito.variable} ${poiret.variable} ${shantell.variable} ${playwrite.variable} antialiased`}
     >
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -214,7 +231,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Poiret+One&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Playwrite+FR+Moderne:wght@100..400&family=Poiret+One&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
           rel="stylesheet"
         />
         <script

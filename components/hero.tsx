@@ -51,31 +51,33 @@ export function Hero() {
             </Badge>
           </div>
 
-          <h1 className="mt-6 font-heading text-4xl font-bold leading-[1.05] tracking-tight text-balance sm:text-5xl lg:text-6xl">
+          <h1 className="mt-6 text-4xl leading-[1.15] tracking-tight text-balance sm:text-5xl lg:text-6xl">
             <span className="sr-only">Everyday essentials, curated with care.</span>
             <span aria-hidden="true">
-              <TextEffect
-                as="span"
-                per="word"
-                preset="fade-in-blur"
-                delay={0.05}
-                speedReveal={1.1}
-              >
-                Everyday essentials,
-              </TextEffect>{" "}
-              <TextEffect
-                as="span"
-                per="word"
-                preset="fade-in-blur"
-                delay={0.35}
-                speedReveal={1.1}
-                className="text-primary"
-              >
-                curated with
-              </TextEffect>{" "}
-              <span className="relative inline-block pr-[0.08em] align-baseline">
-                <span className="invisible" aria-hidden="true">
-                  intent.
+              <span className="font-shantell font-semibold">
+                <TextEffect
+                  as="span"
+                  per="word"
+                  preset="fade-in-blur"
+                  delay={0.05}
+                  speedReveal={1.1}
+                >
+                  Everyday essentials,
+                </TextEffect>{" "}
+                <TextEffect
+                  as="span"
+                  per="word"
+                  preset="fade-in-blur"
+                  delay={0.35}
+                  speedReveal={1.1}
+                  className="text-primary"
+                >
+                  curated with
+                </TextEffect>{" "}
+              </span>
+              <span className="relative inline-block align-baseline font-playwrite font-normal tracking-normal text-primary pr-2">
+                <span className="invisible select-none" aria-hidden="true">
+                  detail.
                 </span>
                 <TextLoop
                   className="absolute inset-y-0 left-0 overflow-y-clip text-primary [perspective:600px]"
