@@ -10,6 +10,7 @@ import { useCart } from "@/components/cart-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { WhatsAppCheckoutModal, WhatsAppIcon } from "@/components/whatsapp-checkout-modal"
 import { formatLKR, site } from "@/lib/site"
 
 export default function CartPage() {
@@ -182,18 +183,28 @@ export default function CartPage() {
               </p>
             )}
 
-            <Button
-              size="lg"
-              className="w-full"
-              onClick={() =>
-                toast.info("Checkout is not connected yet", {
-                  description:
-                    "Call the store on " + site.phone + " to place this order.",
-                })
+            <WhatsAppCheckoutModal
+              items={items.map((i) => ({
+                id: i.id,
+                name: i.name,
+                price: i.price,
+                quantity: i.quantity,
+                option: i.option,
+                slug: i.slug,
+              }))}
+              subtotal={subtotal}
+              delivery={delivery}
+              total={total}
+              trigger={
+                <Button
+                  size="lg"
+                  className="w-full bg-[#25D366] hover:bg-[#20ba59] text-white font-semibold shadow-md shadow-emerald-500/20 text-base h-12 flex items-center justify-center gap-2 cursor-pointer transition-transform hover:scale-[1.01]"
+                >
+                  <WhatsAppIcon className="size-5 shrink-0" />
+                  <span>Proceed to WhatsApp Checkout</span>
+                </Button>
               }
-            >
-              Proceed to checkout
-            </Button>
+            />
 
             <p className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
               <Truck className="size-3.5" aria-hidden="true" />

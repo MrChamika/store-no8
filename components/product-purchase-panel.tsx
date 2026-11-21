@@ -6,7 +6,9 @@ import { CheckCircle2, Minus, Plus, RotateCcw, ShieldCheck, Truck } from "lucide
 import { AddToCartButton } from "@/components/add-to-cart-button"
 import { StarRating } from "@/components/star-rating"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { WhatsAppCheckoutModal, WhatsAppIcon } from "@/components/whatsapp-checkout-modal"
 import type { Product } from "@/lib/products"
 import { formatLKR, site } from "@/lib/site"
 import { cn } from "@/lib/utils"
@@ -109,42 +111,79 @@ export function ProductPurchasePanel({ product }: { product: Product }) {
         {product.inStock ? "In stock at Kegalle store · Dispatches in 24 hours" : "Currently out of stock"}
       </div>
 
-      <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center gap-1 rounded-xl border bg-background p-1 shadow-xs">
-          <button
-            type="button"
-            onClick={() => setQuantity((value) => Math.max(1, value - 1))}
-            disabled={quantity <= 1}
-            aria-label="Decrease quantity"
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-40"
-          >
-            <Minus className="size-4" aria-hidden="true" />
-          </button>
-          <span
-            className="w-8 text-center text-sm font-semibold tabular-nums"
-            aria-live="polite"
-            aria-label={`Quantity ${quantity}`}
-          >
-            {quantity}
-          </span>
-          <button
-            type="button"
-            onClick={() => setQuantity((value) => Math.min(10, value + 1))}
-            disabled={quantity >= 10}
-            aria-label="Increase quantity"
-            className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-40"
-          >
-            <Plus className="size-4" aria-hidden="true" />
-          </button>
-        </div>
+      <div className="flex flex-col gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-1 rounded-xl border bg-background p-1 shadow-xs">
+            <button
+              type="button"
+              onClick={() => setQuantity((value) => Math.max(1, value - 1))}
+              disabled={quantity <= 1}
+              aria-label="Decrease quantity"
+              className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-40"
+            >
+              <Minus className="size-4" aria-hidden="true" />
+            </button>
+            <span
+              className="w-8 text-center text-sm font-semibold tabular-nums"
+              aria-live="polite"
+              aria-label={`Quantity ${quantity}`}
+            >
+              {quantity}
+            </span>
+            <button
+              type="button"
+              onClick={() => setQuantity((value) => Math.min(10, value + 1))}
+              disabled={quantity >= 10}
+              aria-label="Increase quantity"
+              className="grid size-8 place-items-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-40"
+            >
+              <Plus className="size-4" aria-hidden="true" />
+            </button>
+          </div>
 
-        <AddToCartButton
-          product={product}
-          option={option}
-          quantity={quantity}
-          size="lg"
-          className="flex-1 sm:flex-none sm:min-w-56 shadow-sm shadow-primary/20"
-        />
+          <AddToCartButton
+            product={product}
+            option={option}
+            quantity={quantity}
+            size="lg"
+            className="flex-1 sm:min-w-44 shadow-sm shadow-primary/20"
+          />
+
+          <WhatsAppCheckoutModal
+            items={[
+              {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                quantity: quantity,
+                option: option,
+                slug: product.slug,
+              },
+            ]}
+            subtotal={product.price * quantity}
+            delivery={
+              product.price * quantity >= site.delivery.freeOver
+                ? 0
+                : site.delivery.fee
+            }
+            total={
+              product.price * quantity +
+              (product.price * quantity >= site.delivery.freeOver
+                ? 0
+                : site.delivery.fee)
+            }
+            trigger={
+              <Button
+                size="lg"
+                variant="outline"
+                className="flex-1 sm:min-w-44 border-emerald-600/40 text-emerald-700 hover:bg-emerald-50 hover:text-emerald-800 dark:border-emerald-500/40 dark:text-emerald-300 dark:hover:bg-emerald-950/40 font-semibold gap-2 cursor-pointer shadow-xs"
+              >
+                <WhatsAppIcon className="size-4 shrink-0 text-[#25D366]" />
+                <span>Buy via WhatsApp</span>
+              </Button>
+            }
+          />
+        </div>
       </div>
 
       <ul className="grid gap-3 rounded-2xl border border-border/60 bg-muted/40 p-5 text-sm">
