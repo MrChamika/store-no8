@@ -1,4 +1,4 @@
-﻿"use client"
+"use client"
 
 import * as React from "react"
 import { CheckCircle2, Minus, Plus, RotateCcw, ShieldCheck, Truck } from "lucide-react"
