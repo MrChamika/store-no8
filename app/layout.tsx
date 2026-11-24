@@ -13,6 +13,7 @@ import { LazySplashCursor } from "@/components/lazy-splash-cursor"
 import { MobileNav } from "@/components/mobile-nav"
 import { MotionProvider } from "@/components/motion/motion-provider"
 import { ScrollProgress } from "@/components/motion-primitives/scroll-progress"
+import { PwaInstaller } from "@/components/pwa-installer"
 import { SiteBackground } from "@/components/site-background"
 import { SiteFooter } from "@/components/site-footer"
 import { SitePreloader } from "@/components/site-preloader"
@@ -98,6 +99,12 @@ export const metadata: Metadata = {
       { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
     apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: site.name,
   },
   keywords: [
     "Store No. 8",
@@ -261,6 +268,7 @@ export default function RootLayout({
             </div>
             <MobileNav />
             <SpinningBadge />
+            <PwaInstaller />
             <Toaster position="top-center" richColors />
             <LazySplashCursor />
           </CartProvider>

@@ -3,12 +3,13 @@
 import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Minus, Plus, ShoppingBag, Trash2, Truck } from "lucide-react"
+import { Gift, Minus, Plus, ShoppingBag, Trash2, Truck } from "lucide-react"
 import { toast } from "sonner"
 
 import { useCart } from "@/components/cart-provider"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { WhatsAppCheckoutModal, WhatsAppIcon } from "@/components/whatsapp-checkout-modal"
 import { formatLKR, site } from "@/lib/site"
@@ -17,8 +18,12 @@ export default function CartPage() {
   const { items, itemCount, subtotal, hydrated, removeItem, setQuantity } =
     useCart()
 
+  const [giftWrapping, setGiftWrapping] = React.useState(false)
+  const [giftMessage, setGiftMessage] = React.useState("")
+
   const delivery = subtotal >= site.delivery.freeOver ? 0 : site.delivery.fee
-  const total = subtotal + delivery
+  const giftFee = giftWrapping ? site.giftWrapping.fee : 0
+  const total = subtotal + delivery + giftFee
 
   if (!hydrated) {
     return (
@@ -165,7 +170,50 @@ export default function CartPage() {
                   {delivery === 0 ? "Free" : formatLKR(delivery)}
                 </dd>
               </div>
+              {giftWrapping && (
+                <div className="flex items-center justify-between text-pink-600 dark:text-pink-400">
+                  <dt className="flex items-center gap-1">🎁 Gift wrapping</dt>
+                  <dd className="font-medium">+{formatLKR(giftFee)}</dd>
+                </div>
+              )}
             </dl>
+
+            {/* Gift Wrapping Option Box */}
+            <div className="rounded-xl border border-pink-200/90 bg-gradient-to-r from-pink-50/70 via-rose-50/40 to-amber-50/40 dark:border-pink-900/50 dark:from-pink-950/25 dark:via-rose-950/20 dark:to-background p-3 transition-all">
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={giftWrapping}
+                  onChange={(e) => setGiftWrapping(e.target.checked)}
+                  className="mt-0.5 size-4 rounded border-pink-300 text-pink-600 focus:ring-pink-500 accent-pink-600 cursor-pointer"
+                />
+                <div className="flex-1 text-xs">
+                  <div className="flex items-center justify-between font-semibold text-foreground">
+                    <span className="flex items-center gap-1 text-pink-700 dark:text-pink-300">
+                      <Gift className="size-3.5" aria-hidden="true" />
+                      Add gift wrapping
+                    </span>
+                    <span className="text-pink-700 dark:text-pink-300 font-bold">
+                      +{formatLKR(site.giftWrapping.fee)}
+                    </span>
+                  </div>
+                  <p className="mt-0.5 text-muted-foreground text-[11px] leading-tight">
+                    {site.giftWrapping.description}
+                  </p>
+                </div>
+              </label>
+
+              {giftWrapping && (
+                <div className="mt-2.5 pt-2 border-t border-pink-200/80 dark:border-pink-900/40">
+                  <Input
+                    placeholder="Gift card note (e.g. Happy Birthday!)"
+                    value={giftMessage}
+                    onChange={(e) => setGiftMessage(e.target.value)}
+                    className="text-xs h-8 bg-background/90 border-pink-200 dark:border-pink-900"
+                  />
+                </div>
+              )}
+            </div>
 
             <Separator />
 
@@ -195,6 +243,8 @@ export default function CartPage() {
               subtotal={subtotal}
               delivery={delivery}
               total={total}
+              defaultGiftWrapping={giftWrapping}
+              defaultGiftMessage={giftMessage}
               trigger={
                 <Button
                   size="lg"

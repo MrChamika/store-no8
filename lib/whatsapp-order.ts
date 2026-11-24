@@ -13,6 +13,9 @@ export interface WhatsAppOrderDetails {
   items: OrderItem[]
   subtotal: number
   delivery: number
+  giftWrapping?: boolean
+  giftWrappingFee?: number
+  giftMessage?: string
   total: number
   customerName?: string
   phone?: string
@@ -71,6 +74,13 @@ export function generateWhatsAppOrderUrl(details: WhatsAppOrderDetails): string 
         : `LKR ${details.delivery.toLocaleString("en-LK")}`
     }`
   )
+  if (details.giftWrapping) {
+    const fee = details.giftWrappingFee ?? site.giftWrapping.fee
+    lines.push(`🎁 *Gift Wrapping:* LKR ${fee.toLocaleString("en-LK")} (Boutique box & satin ribbon)`)
+    if (details.giftMessage?.trim()) {
+      lines.push(`💌 *Gift Card Note:* "${details.giftMessage.trim()}"`)
+    }
+  }
   lines.push(`💰 *TOTAL AMOUNT:* *LKR ${details.total.toLocaleString("en-LK")}*`)
   lines.push("================================")
   lines.push("✨ Please confirm order availability and dispatch date. Thank you!")

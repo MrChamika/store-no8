@@ -29,6 +29,11 @@ export const site = {
     fee: 450,
     note: "Island-wide delivery available on all orders.",
   },
+  giftWrapping: {
+    fee: 150,
+    label: "Add gift wrapping",
+    description: "Packed in Store No. 8 boutique gift box with satin ribbon & handwritten message card.",
+  },
 } as const
 
 export function formatLKR(value: number) {

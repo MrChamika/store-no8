@@ -39,7 +39,9 @@ interface WhatsAppCheckoutModalProps {
   items: OrderItem[]
   subtotal: number
   delivery: number
-  total: number
+  total?: number
+  defaultGiftWrapping?: boolean
+  defaultGiftMessage?: string
   trigger?: React.ReactNode
   open?: boolean
   onOpenChange?: (open: boolean) => void
@@ -49,7 +51,9 @@ export function WhatsAppCheckoutModal({
   items,
   subtotal,
   delivery,
-  total,
+  total: passedTotal,
+  defaultGiftWrapping = false,
+  defaultGiftMessage = "",
   trigger,
   open: controlledOpen,
   onOpenChange,
@@ -65,7 +69,21 @@ export function WhatsAppCheckoutModal({
   const [city, setCity] = React.useState("")
   const [paymentMethod, setPaymentMethod] = React.useState("Cash on Delivery (COD)")
   const [notes, setNotes] = React.useState("")
+  const [giftWrapping, setGiftWrapping] = React.useState(defaultGiftWrapping)
+  const [giftMessage, setGiftMessage] = React.useState(defaultGiftMessage)
   const [copied, setCopied] = React.useState(false)
+
+  // Keep in sync if defaultGiftWrapping/defaultGiftMessage changes from parent
+  React.useEffect(() => {
+    setGiftWrapping(defaultGiftWrapping)
+  }, [defaultGiftWrapping])
+
+  React.useEffect(() => {
+    if (defaultGiftMessage) setGiftMessage(defaultGiftMessage)
+  }, [defaultGiftMessage])
+
+  const giftFee = giftWrapping ? site.giftWrapping.fee : 0
+  const computedTotal = subtotal + delivery + giftFee
 
   // Load saved details from localStorage
   React.useEffect(() => {
@@ -102,7 +120,10 @@ export function WhatsAppCheckoutModal({
       items,
       subtotal,
       delivery,
-      total,
+      giftWrapping,
+      giftWrappingFee: giftFee,
+      giftMessage: giftWrapping ? giftMessage : undefined,
+      total: computedTotal,
       customerName,
       phone,
       address,
@@ -123,7 +144,10 @@ export function WhatsAppCheckoutModal({
       items,
       subtotal,
       delivery,
-      total,
+      giftWrapping,
+      giftWrappingFee: giftFee,
+      giftMessage: giftWrapping ? giftMessage : undefined,
+      total: computedTotal,
     })
     window.open(url, "_blank")
     toast.info("Opening WhatsApp with cart items!", {
@@ -137,7 +161,10 @@ export function WhatsAppCheckoutModal({
       items,
       subtotal,
       delivery,
-      total,
+      giftWrapping,
+      giftWrappingFee: giftFee,
+      giftMessage: giftWrapping ? giftMessage : undefined,
+      total: computedTotal,
       customerName,
       phone,
       address,
@@ -174,7 +201,7 @@ export function WhatsAppCheckoutModal({
         <div className="mt-4 rounded-xl border bg-muted/30 p-4">
           <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             <span>Items ({items.reduce((acc, i) => acc + i.quantity, 0)})</span>
-            <span>Total: {formatLKR(total)}</span>
+            <span className="text-foreground font-bold">Total: {formatLKR(computedTotal)}</span>
           </div>
           <ul className="mt-2.5 max-h-36 overflow-y-auto divide-y divide-border/60 text-sm">
             {items.map((item) => (
@@ -193,6 +220,52 @@ export function WhatsAppCheckoutModal({
               {delivery === 0 ? "FREE" : formatLKR(delivery)}
             </span>
           </div>
+          {giftWrapping && (
+            <div className="mt-1 flex items-center justify-between text-xs text-pink-600 dark:text-pink-400">
+              <span className="flex items-center gap-1">🎁 Boutique gift wrapping</span>
+              <span className="font-medium">+{formatLKR(giftFee)}</span>
+            </div>
+          )}
+        </div>
+
+        {/* Gift Wrapping Toggle Card */}
+        <div className="mt-4 rounded-xl border border-pink-200/90 bg-gradient-to-r from-pink-50/70 via-rose-50/40 to-amber-50/50 dark:border-pink-900/50 dark:from-pink-950/25 dark:via-rose-950/20 dark:to-background p-3.5 transition-all">
+          <label className="flex items-start gap-3 cursor-pointer select-none">
+            <input
+              type="checkbox"
+              checked={giftWrapping}
+              onChange={(e) => setGiftWrapping(e.target.checked)}
+              className="mt-0.5 size-4 rounded border-pink-300 text-pink-600 focus:ring-pink-500 accent-pink-600 cursor-pointer"
+            />
+            <div className="flex-1 text-xs">
+              <div className="flex items-center justify-between font-semibold text-foreground">
+                <span className="flex items-center gap-1.5 text-pink-700 dark:text-pink-300">
+                  🎁 Add gift wrapping for {formatLKR(site.giftWrapping.fee)}
+                </span>
+                <span className="rounded-full bg-pink-100 dark:bg-pink-900/60 px-2 py-0.5 text-[11px] font-bold text-pink-700 dark:text-pink-300">
+                  +{formatLKR(site.giftWrapping.fee)}
+                </span>
+              </div>
+              <p className="mt-1 text-muted-foreground leading-relaxed">
+                {site.giftWrapping.description}
+              </p>
+            </div>
+          </label>
+
+          {giftWrapping && (
+            <div className="mt-3 pt-3 border-t border-pink-200/80 dark:border-pink-900/50 space-y-1.5 animate-in fade-in-50 duration-200">
+              <Label htmlFor="checkout-gift-message" className="text-xs font-semibold text-pink-800 dark:text-pink-200">
+                💌 Handwritten Gift Card Note (Optional)
+              </Label>
+              <Input
+                id="checkout-gift-message"
+                placeholder="e.g. Wishing you a happy birthday, Sanduni! Best wishes from Kasun."
+                value={giftMessage}
+                onChange={(e) => setGiftMessage(e.target.value)}
+                className="text-xs bg-background/90 border-pink-200 dark:border-pink-900"
+              />
+            </div>
+          )}
         </div>
 
         {/* Checkout Form */}
